@@ -72,16 +72,13 @@
     <ClCompile Include="libmpeg\source\mpeg-util.c">
       <Filter>源文件\libmpeg</Filter>
     </ClCompile>
+    <ClCompile Include="RtspToRtpPs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="test.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="RtspToPS.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="RtpSend.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Rtsp2RtpPs.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,13 +86,13 @@
     <ClInclude Include="libmpeg\source\mpeg-util.h">
       <Filter>源文件\libmpeg</Filter>
     </ClInclude>
-    <ClInclude Include="RtspToPS.h">
+    <ClInclude Include="rtp.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="RtpSend.h">
+    <ClInclude Include="RtspToRtpPs.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="Rtsp2RtpPS.h">
+    <ClInclude Include="Wrapper.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -176,16 +176,15 @@
     <ClCompile Include="libmpeg\source\mpeg-ts-h264.c" />
     <ClCompile Include="libmpeg\source\mpeg-ts-h265.c" />
     <ClCompile Include="libmpeg\source\mpeg-util.c" />
-    <ClCompile Include="RtpSend.c" />
-    <ClCompile Include="Rtsp2RtpPs.c" />
-    <ClCompile Include="RtspToPS.c" />
+    <ClCompile Include="RtspToRtpPs.cpp" />
+    <ClCompile Include="Wrapper.cpp" />
     <ClCompile Include="test.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libmpeg\source\mpeg-util.h" />
-    <ClInclude Include="RtpSend.h" />
-    <ClInclude Include="Rtsp2RtpPS.h" />
-    <ClInclude Include="RtspToPS.h" />
+    <ClInclude Include="rtp.h" />
+    <ClInclude Include="RtspToRtpPs.h" />
+    <ClInclude Include="Wrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
