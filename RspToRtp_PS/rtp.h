@@ -47,7 +47,7 @@ typedef struct RtpClient {
 
 	//RtpClient() {}
 
-	RtpClient(uint32_t ssrc, std::string ip, uint16_t port)    // ¹¹Ôìº¯Êý
+	RtpClient(uint32_t ssrc, char* ip, uint16_t port)    // ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½
 	{
 		rtpSsrc = ssrc;
 		remotePort = port;
@@ -59,7 +59,7 @@ typedef struct RtpClient {
 
 		remoteAddr.sin_port = htons(port);
 
-		remoteAddr.sin_addr.s_addr = inet_addr(ip.c_str());
+		remoteAddr.sin_addr.s_addr = inet_addr(ip);
 
 		uiFdsocket = socket(AF_INET, SOCK_DGRAM, 0);
 	}

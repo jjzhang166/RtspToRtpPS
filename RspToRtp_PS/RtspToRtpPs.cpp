@@ -1,4 +1,4 @@
-// RspToRtp_PS.cpp : ´ËÎÄ¼þ°üº¬ "main" º¯Êý¡£³ÌÐòÖ´ÐÐ½«ÔÚ´Ë´¦¿ªÊ¼²¢½áÊø¡£
+// RspToRtp_PS.cpp : ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ "main" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð½ï¿½ï¿½Ú´Ë´ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,12 +7,14 @@
 //#include <map>
 #include "RtspToRtpPs.h"
 #include <thread>
+#include <utility>
 
-Rtsp2Ps::Rtsp2Ps(std::string  rtspUrl, uint32_t ssrc, std::string ip, uint16_t port)
+Rtsp2Ps::Rtsp2Ps(uint32_t ssrc, char* ip, uint16_t port)
 {
 	m_isWorking = false;
-	m_rtspUrl = rtspUrl;
+	//m_rtspUrl.assign(rtspUrl);
 	m_pclient = new RtpClient(ssrc, ip, port);
+
 }
 
 
@@ -26,7 +28,13 @@ int Rtsp2Ps::freeRes()
 	return 0;
 }
 
-int Rtsp2Ps::startReMux()
+int Rtsp2Ps::startSend()
+{
+	m_isSend = true;
+	return 0;
+}
+
+int Rtsp2Ps::startReMux(char* rtspUrl)
 {
 	int ret = 0;
 	AVStream *in_stream;
@@ -37,9 +45,9 @@ int Rtsp2Ps::startReMux()
 	// ³õÊ¼»¯ÍøÂç
 	//avformat_network_init();
 	// ´ò¿ªÎÄ¼þ
-	if ((ret = avformat_open_input(&ifmt_ctx, m_rtspUrl.c_str(), 0, &opt)) < 0) {
-		fprintf(stderr, "Could not open input file '%s'", m_rtspUrl);
-		avformat_close_input(&ifmt_ctx);
+	if ((ret = avformat_open_input(&ifmt_ctx, rtspUrl, 0, &opt)) < 0) {
+		printf("Could not open input file '%s'", rtspUrl);
+		//avformat_close_input(&ifmt_ctx);
 		return -1;
 	}
 
@@ -48,7 +56,7 @@ int Rtsp2Ps::startReMux()
 		avformat_close_input(&ifmt_ctx);
 		return -1;
 	}
-	av_dump_format(ifmt_ctx, 0, m_rtspUrl.c_str(), 0);
+	av_dump_format(ifmt_ctx, 0, rtspUrl, 0);
 
 	std::thread  th = std::thread(rtsp2mpeg_ps, ifmt_ctx, this);
 	th.detach();
@@ -85,9 +93,14 @@ int Rtsp2Ps::rtsp2mpeg_ps(AVFormatContext *ifmt_ctx, void* param)
 		ps_muxer_add_stream((struct ps_muxer_t*)ps, codecid, NULL, 0);
 	}
 
-	//ÊµÏÖREMUXING
+	//Êµï¿½ï¿½REMUXING
 	av_init_packet(&pkt);
 	while (rtsp2Ps->m_isWorking) {
+		if (!rtsp2Ps->m_isSend)
+		{
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			continue;
+		}
 		ret = av_read_frame(ifmt_ctx, &pkt);
 		if (ret < 0)
 			break;

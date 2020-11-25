@@ -1,8 +1,6 @@
 #include "Wrapper.h"
 #include <windows.h>
 
-//将一个H264文件（或其他格式）转为PS文件
-
 int main(int argc, char **argv)
 {
 	//rtsp2rtp_ps("rtsp://admin:abc12345@10.18.35.19:554/cam/realmonitor?channel=1&subtype=0", 100000, "127.0.0.1",  8088);
@@ -13,6 +11,7 @@ int main(int argc, char **argv)
 	//Rtsp2Ps* rtspPs = new Rtsp2Ps(rtspUrl, 10000, ip, 8088);
 	//rtspPs->startReMux();
 	startReMux(5125555, "rtsp://admin:abc12345@10.18.35.19:554/cam/realmonitor?channel=1&subtype=0", 10000, "127.0.0.1", 8088);
+	startSend(5125555);
 	Sleep(100000);
 
 	return 0;

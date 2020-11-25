@@ -23,11 +23,12 @@ extern "C" {
 class Rtsp2Ps
 {
 public:
-	Rtsp2Ps(std::string  rtspUrl, uint32_t ssrc, std::string ip, uint16_t port);
+	Rtsp2Ps(uint32_t ssrc, char* ip, uint16_t port);
 	~Rtsp2Ps();
 
-	int startReMux();
+	int startReMux(char* rtspUrl);
 	int stopReMux();
+	int startSend();
 private:
 	int rtp_send(uint8_t * data, int len);
     static int rtsp2mpeg_ps(AVFormatContext *ifmt_ctx, void* param);
@@ -38,8 +39,8 @@ private:
 	static int avCodecIdToStreamId(AVCodecID codec);
 
 private:
-	std::string m_rtspUrl;
-	bool m_isWorking;
+	bool m_isWorking = false;
+	bool m_isSend = false;
 	unsigned char m_buffer[1024 * 1024];
 	RtpClient* m_pclient;
 };

@@ -16,10 +16,26 @@ int startReMux(unsigned int taskId, char*  rtspUrl, unsigned int ssrc, char* ip,
 		return -1;
 	}
 
-	Rtsp2Ps* rtsp2Ps = new Rtsp2Ps(std::string(rtspUrl), ssrc, std::string(ip), port);
+	Rtsp2Ps* rtsp2Ps = new Rtsp2Ps(ssrc, ip, port);
+
 	reMuxTask[taskId] = rtsp2Ps;
-	int ret = rtsp2Ps->startReMux();
+
+	int ret = rtsp2Ps->startReMux(rtspUrl);
 	return ret;
+}
+
+int startSend(unsigned int taskId)
+{
+	std::lock_guard<std::mutex> lock(mutex);
+
+	if (reMuxTask.find(taskId) == reMuxTask.end())
+	{
+		return -1;
+	}
+
+	Rtsp2Ps* rtsp2Ps = reMuxTask[taskId];
+	rtsp2Ps->startSend();
+	return 0;
 }
 
 int stopReMux(unsigned int taskId)
